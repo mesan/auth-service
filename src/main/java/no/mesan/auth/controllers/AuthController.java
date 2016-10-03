@@ -15,7 +15,6 @@ public class AuthController {
 
     @PostMapping("")
     public String authenticate(@RequestBody final AuthenticationRequestBody payload) {
-        System.out.println(payload);
         final AuthenticationResult result = ldapService.authenticate(payload.getEmail(), payload.getPassword());
         System.out.println(result.getUserInfo().getUniqueId());
         System.out.println(result.getUserInfo().getDisplayableId());
