@@ -8,11 +8,11 @@ import java.util.Date;
 /**
  * Our wrapper for authentication result from LDAP
  */
-public class LdapServiceResult {
+public class LdapAuthenticationResult {
 
     private final AuthenticationResult authenticationResult;
 
-    public LdapServiceResult(AuthenticationResult authenticationResult) {
+    public LdapAuthenticationResult(AuthenticationResult authenticationResult) {
         this.authenticationResult = authenticationResult;
     }
 

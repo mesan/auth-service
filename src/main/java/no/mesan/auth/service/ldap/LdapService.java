@@ -33,7 +33,7 @@ public class LdapService {
      * @throws LdapServiceException if an error happens as a result of invalid connection or if the callback from
      * the service takes too long to respond
      */
-    public LdapServiceResult authenticate(final String email, final String password) {
+    public LdapAuthenticationResult authenticate(final String email, final String password) {
         final ExecutorService service = Executors.newSingleThreadExecutor();
         try {
             final Future<AuthenticationResult> resultFuture = initiateRequest(service, config, email, password);
@@ -78,8 +78,8 @@ public class LdapService {
      * @throws ExecutionException if blocking for the result throws exception
      * @throws InterruptedException if the blocking is interrupted
      */
-    private LdapServiceResult buildResult(Future<AuthenticationResult> resultFuture) throws ExecutionException, InterruptedException {
+    private LdapAuthenticationResult buildResult(Future<AuthenticationResult> resultFuture) throws ExecutionException, InterruptedException {
         final AuthenticationResult authenticationResult = resultFuture.get();
-        return new LdapServiceResult(authenticationResult);
+        return new LdapAuthenticationResult(authenticationResult);
     }
 }
