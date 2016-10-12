@@ -36,7 +36,7 @@ public class LdapServiceIT {
 
     @Test
     public void authenticateSuccessfulWithValidUsernameAndPassword() throws Exception {
-        LdapServiceResult result = ldapService.authenticate(testEmail, testPassword);
+        LdapAuthenticationResult result = ldapService.authenticate(testEmail, testPassword);
         assertNotNull(result.getExpirationDate());
         assertNotNull(result.getAccessToken());
 
