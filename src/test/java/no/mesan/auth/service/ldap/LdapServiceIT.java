@@ -1,6 +1,5 @@
 package no.mesan.auth.service.ldap;
 
-import no.mesan.auth.config.LdapConfig;
 import no.mesan.auth.config.LdapTestConfig;
 import org.junit.Before;
 import org.junit.Test;
