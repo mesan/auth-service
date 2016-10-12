@@ -40,8 +40,6 @@ public class LdapServiceIT {
         assertNotNull(result.getExpirationDate());
         assertNotNull(result.getAccessToken());
 
-        assertNotNull(result.getUserInfo().getUniqueId());
-        assertNotNull(result.getUserInfo().getDisplayableId());
-        assertNotNull(result.getUserInfo().getFamilyName());
+        assertNotNull(result.getUserId());
     }
 }
