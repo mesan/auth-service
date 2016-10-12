@@ -25,7 +25,7 @@ public class LdapService {
     }
 
     /**
-     * Authenitcate a given user based on email and password to LDAP
+     * Authenticate a given user based on email and password to LDAP
      *
      * @param email of the user to authenticate
      * @param password of the user to authenticate
@@ -33,19 +33,53 @@ public class LdapService {
      * @throws LdapServiceException if an error happens as a result of invalid connection or if the callback from
      * the service takes too long to respond
      */
-    public AuthenticationResult authenticate(final String email, final String password) {
+    public LdapServiceResult authenticate(final String email, final String password) {
         final ExecutorService service = Executors.newSingleThreadExecutor();
         try {
-            final AuthenticationContext context = new AuthenticationContext(config.getAuthority(), true, service);
-            final Future<AuthenticationResult> resultFuture = context.acquireToken(config.getResource(),
-                    config.getClientId(), email, password, null);
-            return resultFuture.get();
-        } catch (MalformedURLException e) {
-            throw new LdapServiceException("Failed to authenticate to Azure LDAP due to URL", e);
+            final Future<AuthenticationResult> resultFuture = initiateRequest(service, config, email, password);
+            return buildResult(resultFuture);
+
         } catch (InterruptedException | ExecutionException e) {
             throw new LdapServiceException("Exception while waiting for response from LDAP", e);
         } finally {
             service.shutdown();
         }
+    }
+
+    /**
+     * Initiate the request to the authentication service with the corresponding application-config, and user credentials.
+     *
+     * @param service   executor execution the request
+     * @param config    of the app which goes against LDAP authentication
+     * @param email     of the user
+     * @param password  of the user
+     * @return the future result of the authentication request
+     */
+    private Future<AuthenticationResult> initiateRequest(final ExecutorService service, final LdapServiceConfig config,
+                                                         final String email, final String password) {
+        try {
+            final AuthenticationContext context = new AuthenticationContext(config.getAuthority(), true, service);
+
+            final Future<AuthenticationResult> authenticationResultFuture = context.acquireToken(config.getResource(),
+                    config.getClientId(), email, password, null);
+
+            return authenticationResultFuture;
+
+        } catch (MalformedURLException e) {
+            throw new LdapServiceException("Url for authentication was invalid", e);
+        }
+    }
+
+    /**
+     * Blocks for the result from an authentication request and returns the representation of the result.
+     *
+     * @param resultFuture future reqpresenting result of request to authentication service
+     * @return the result of the authentication
+     * @throws ExecutionException if blocking for the result throws exception
+     * @throws InterruptedException if the blocking is interrupted
+     */
+    private LdapServiceResult buildResult(Future<AuthenticationResult> resultFuture) throws ExecutionException, InterruptedException {
+        final AuthenticationResult authenticationResult = resultFuture.get();
+        return new LdapServiceResult(authenticationResult);
     }
 }

@@ -16,12 +16,15 @@ public class AuthController {
 
     @PostMapping("")
     public String authenticate(@RequestBody final AuthenticationRequestBody payload) {
-        final AuthenticationResult result = ldapService.authenticate(payload.getEmail(), payload.getPassword());
+        ldapService.authenticate(payload.getEmail(), payload.getPassword());
+        /*
         System.out.println(result.getUserInfo().getUniqueId());
         System.out.println(result.getUserInfo().getDisplayableId());
         System.out.println(result.getUserInfo().getFamilyName());
         System.out.println(result.getUserInfo().getGivenName());
-        throw new NotImplementedException("Implement creation of JWT with the results of the authentication against" +
-                " LDAP");
+        */
+
+
+        return "";
     }
 }
