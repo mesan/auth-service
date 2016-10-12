@@ -8,8 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile("development")
-public class DevConfig {
+public class LdapConfig {
 
     @Value("${ldap.authority}")
     private String authority;
