@@ -1,7 +1,9 @@
 package no.mesan.auth.token;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import no.mesan.auth.token.exceptions.JwtException;
 
 import java.util.Date;
 
@@ -17,11 +19,16 @@ public class JWTTokenBuilder {
         return Jwts.builder()
                 .setSubject(uniqueUserId)
                 .setExpiration(expirationDate)
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
 
     public String extractUserId(final String compactJWT) {
+        try {
+
+        } catch (ExpiredJwtException e) {
+            throw new JwtException();
+        }
         return Jwts.parser()
                 .setSigningKey(secret)
                 .parseClaimsJws(compactJWT)
