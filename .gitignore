@@ -2,3 +2,4 @@
 .idea/
 target/
 src/main/resources/application-production.properties
+src/test/resources/application-test.properties

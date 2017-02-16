@@ -1,33 +1,37 @@
 package no.mesan.auth.token;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
-import no.mesan.auth.domain.User;
-import no.mesan.auth.exceptions.ApplicationException;
-import org.springframework.beans.factory.annotation.Value;
+import no.mesan.auth.token.exceptions.JwtException;
+
+import java.util.Date;
 
 public class JWTTokenBuilder {
 
-    @Value("${jwt.secret}")
-    private String secret;
+    private final String secret;
 
-    public String generateToken(final User user) {
+    public JWTTokenBuilder(final String secret) {
+        this.secret = secret;
+    }
+
+    public String generateToken(final String uniqueUserId, final Date expirationDate) {
         return Jwts.builder()
-                .setSubject(user.getId())
-                // TODO
-                //.setExpiration()
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .setSubject(uniqueUserId)
+                .setExpiration(expirationDate)
+                .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
 
-    public void parseToen(final String compactJwt) {
+    public String extractUserId(final String compactJWT) {
         try {
-            Jwts.parser()
+            return Jwts.parser()
                     .setSigningKey(secret)
-                    .parseClaimsJws(compactJwt);
-        } catch (SignatureException e) {
-            throw new ApplicationException("Failed to parse token, cannot trust this token!");
+                    .parseClaimsJws(compactJWT)
+                    .getBody()
+                    .getSubject();
+        } catch (final ExpiredJwtException e) {
+            throw new JwtException("token has expired", e);
         }
     }
 }
