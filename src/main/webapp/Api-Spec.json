@@ -55,7 +55,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Sends the pet with pet Id",
+                        "description": "Token response containing email of user within decoded Json Web Token",
                         "schema": {
                             "$ref": "#/definitions/TokenResponse"
                         }
