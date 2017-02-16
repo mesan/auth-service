@@ -24,7 +24,7 @@ public class LdapAuthenticationResult {
         return authenticationResult.getExpiresOnDate();
     }
 
-    public String getUserId() {
-        return authenticationResult.getUserInfo().getUniqueId();
+    public String getEmail() {
+        return authenticationResult.getUserInfo().getDisplayableId();
     }
 }

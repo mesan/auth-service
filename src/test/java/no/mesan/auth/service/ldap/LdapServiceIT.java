@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.junit.Assert.assertNotNull;
 
 /**
- * Run with -Dldap.it.test.username=<MyMesanOutlookEmail> -Dtest.ldap.it.test.password=<MyMesanOutlookPassword>
+ * Run with -Dldap.it.test.username=<MyMesanOutlookEmail> -Dldap.it.test.password=<MyMesanOutlookPassword>
  */
 @ContextConfiguration(classes = {LdapTestConfig.class, LdapService.class})
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -40,6 +40,6 @@ public class LdapServiceIT {
         assertNotNull(result.getExpirationDate());
         assertNotNull(result.getAccessToken());
 
-        assertNotNull(result.getUserId());
+        assertNotNull(result.getEmail());
     }
 }

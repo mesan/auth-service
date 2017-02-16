@@ -1,9 +1,9 @@
 package no.mesan.auth.token;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
+import no.mesan.auth.token.exceptions.JwtException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,7 +44,7 @@ public class JWTTokenBuilderTest {
         builder.extractUserId(tokenSignedWithUnknownSecret);
     }
 
-    @Test(expected = ExpiredJwtException.class)
+    @Test(expected = JwtException.class)
     public void expiredTokenThrowsException() throws Exception {
         final String uniqueUserId = "4324-4342-3213-6665-0002";
         // Create token with expiration date 10 seconds in the past
