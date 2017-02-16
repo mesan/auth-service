@@ -25,14 +25,13 @@ public class JWTTokenBuilder {
 
     public String extractUserId(final String compactJWT) {
         try {
-
-        } catch (ExpiredJwtException e) {
-            throw new JwtException();
+            return Jwts.parser()
+                    .setSigningKey(secret)
+                    .parseClaimsJws(compactJWT)
+                    .getBody()
+                    .getSubject();
+        } catch (final ExpiredJwtException e) {
+            throw new JwtException("token has expired", e);
         }
-        return Jwts.parser()
-                .setSigningKey(secret)
-                .parseClaimsJws(compactJWT)
-                .getBody()
-                .getSubject();
     }
 }

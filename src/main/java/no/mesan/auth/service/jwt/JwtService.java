@@ -1,6 +1,7 @@
 package no.mesan.auth.service.jwt;
 
 import no.mesan.auth.token.JWTTokenBuilder;
+import no.mesan.auth.token.exceptions.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +17,7 @@ public class JwtService {
         return builder.generateToken(uniqueUserId, expirationDate);
     }
 
-    public void validate(final String compactJWT) {
-        try {
-            builder.extractUserId(compactJWT);
-        } catch ()
+    public String getUserIdFromToken(final String jwtToken) {
+        return builder.extractUserId(jwtToken);
     }
 }
