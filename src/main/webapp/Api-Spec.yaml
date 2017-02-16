@@ -1,0 +1,72 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Netcompany authentication microservice
+  description: |
+    **This service is deployed to Heroku**
+    
+    Find source code of this API [here](https://github.com/mesan/auth-service)
+host: auth-service-microservice.herokuapp.com
+basePath: /authenticate
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  '/':
+    post:
+      parameters:
+        - name: credentialsRequestBody
+          in: body
+          description: The JSON containing users credentials
+          schema:
+            $ref: '#/definitions/CredentialsRequestBody'
+          required: true
+      responses:
+        200:
+          description: JSON Web Token authenticating user
+          schema:
+            $ref: '#/definitions/CredentialsResponse'
+  '/validate':
+    post:
+      parameters:
+        - name: tokenRequestBody
+          in: body
+          description: The JSON containing Json Web Token
+          schema:
+            $ref: '#/definitions/TokenRequestBody'
+          required: true
+      responses:
+        200:
+          description: Sends the pet with pet Id
+          schema:
+            $ref: '#/definitions/TokenResponse'
+
+definitions:
+  CredentialsRequestBody:
+    type: object
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+  CredentialsResponse:
+    type: object
+    properties:
+      token:
+        type: string
+        description: JSON Web Token
+  TokenRequestBody:
+    type: object
+    properties:
+      token:
+        type: string
+        description: JSON Web Token
+  TokenResponse:
+    type: object
+    properties:
+      userId:
+        type: string
+        description: Email of the user from decoded Json Web Token
